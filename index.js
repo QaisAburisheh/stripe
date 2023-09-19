@@ -46,7 +46,7 @@ const createOrder = async (customer, data) => {
   }
 };
 
-const endpointSecret = "whsec_FfB3RVsNHD9QN1MUbN4L827dGK0nbPjz";
+const endpointSecret = "";
 
 app.post(
   "/webhook",
