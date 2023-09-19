@@ -12,15 +12,19 @@ const router = express.Router();
 const checkoutSuccessPage = fs.readFileSync(
   path.join(__dirname, "checkout-success.html")
 );
+
 router.get("/checkout-success", (req, res) => {
   res.set("Content-Type", "text/html");
   res.send(checkoutSuccessPage);
 });
+
 const checkoutCancel = fs.readFileSync(path.join(__dirname, "cancel.html"));
+
 router.get("/cancel", (req, res) => {
   res.set("Content-Type", "text/html");
   res.send(checkoutCancel);
 });
+
 router.post("/create-checkout-session", async (req, res) => {
   const customer = await stripe.customers.create({
     metadata: {
@@ -28,6 +32,7 @@ router.post("/create-checkout-session", async (req, res) => {
       cart: JSON.stringify(req.body.cartItems),
     },
   });
+
   const line_items = req.body.cartItems.map((item) => {
     return {
       price_data: {
@@ -56,9 +61,8 @@ router.post("/create-checkout-session", async (req, res) => {
     customer: customer.id,
     success_url:
       "https://stripe-production-850c.up.railway.app/stripe/checkout-success",
-    cancel_url: "https://paymentorders-production.up.railway.app/stripe/cancel",
+    cancel_url: "https://stripe-production-850c.up.railway.app/cancel",
   });
-
   // res.redirect(303, session.url);
   res.send({ url: session.url });
 });
